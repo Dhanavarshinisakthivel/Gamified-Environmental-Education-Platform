@@ -1,0 +1,9 @@
+spring.application.name=greenlearn
+spring.datasource.url=jdbc:mysql://localhost:3306/greenlearn
+spring.datasource.username=root
+spring.datasource.password=root
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+
+logging.level.org.springframework.web=DEBUG

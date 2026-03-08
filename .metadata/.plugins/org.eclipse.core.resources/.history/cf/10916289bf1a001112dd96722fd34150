@@ -1,0 +1,120 @@
+/* Page Background */
+body{
+    font-family: "Segoe UI", sans-serif;
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background: linear-gradient(135deg,#43a047,#a5d6a7);
+}
+
+/* Glass Card */
+.container{
+    width:380px;
+    padding:40px;
+    border-radius:15px;
+    background:rgba(255,255,255,0.15);
+    backdrop-filter:blur(10px);
+    box-shadow:0 8px 30px rgba(0,0,0,0.3);
+    text-align:center;
+}
+
+/* Title */
+h2{
+    color:white;
+    margin-bottom:25px;
+}
+
+/* Inputs */
+input{
+    width:90%;
+    padding:12px;
+    margin:10px 0;
+    border-radius:8px;
+    border:none;
+    outline:none;
+    font-size:15px;
+}
+
+/* Buttons */
+button{
+    width:95%;
+    padding:12px;
+    margin-top:10px;
+    border:none;
+    border-radius:8px;
+    background:#2e7d32;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    background:#1b5e20;
+    transform:scale(1.05);
+}
+
+/* Links */
+a{
+    color:white;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+a:hover{
+    text-decoration:underline;
+}
+
+/* Quiz Card UI */
+
+.quiz-card{
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 15px 30px rgba(0,0,0,0.2);
+    margin-top:20px;
+}
+
+.question{
+    font-size:20px;
+    font-weight:600;
+    color:#2e7d32;
+    margin-bottom:15px;
+}
+
+.option{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:12px;
+    margin:8px 0;
+    border-radius:8px;
+    background:#f5f5f5;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+.option:hover{
+    background:#c8e6c9;
+}
+
+/* Leaderboard */
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+    margin-top:20px;
+}
+
+th,td{
+    padding:12px;
+    border-bottom:1px solid #ddd;
+}
+
+th{
+    background:#2e7d32;
+    color:white;
+}

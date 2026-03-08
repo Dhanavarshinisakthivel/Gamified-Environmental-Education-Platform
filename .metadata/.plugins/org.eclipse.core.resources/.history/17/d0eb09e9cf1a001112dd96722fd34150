@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Waste Sorting Game</title>
+
+<style>
+
+body{
+font-family:"Segoe UI",sans-serif;
+background:linear-gradient(135deg,#020617,#1e3a8a);
+color:white;
+text-align:center;
+margin:0;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+margin-top:40px;
+}
+
+.timer{
+font-size:20px;
+margin-top:10px;
+color:#93c5fd;
+}
+
+/* ITEMS GRID */
+
+.items{
+display:grid;
+grid-template-columns:repeat(2,220px);
+gap:20px;
+justify-content:center;
+margin-bottom:40px;
+}
+
+.item{
+background:#2563eb;
+padding:15px;
+border-radius:10px;
+cursor:grab;
+transition:0.3s;
+box-shadow:0 5px 15px rgba(0,0,0,0.4);
+}
+
+.item:hover{
+transform:translateY(-5px) scale(1.05);
+background:#1d4ed8;
+}
+
+/* BINS */
+
+.bins{
+display:grid;
+grid-template-columns:repeat(4,160px);
+gap:25px;
+justify-content:center;
+}
+
+.bin{
+height:150px;
+background:#111827;
+border:2px dashed #60a5fa;
+border-radius:12px;
+display:flex;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+font-weight:bold;
+transition:0.3s;
+}
+
+.bin:hover{
+transform:scale(1.05);
+background:#1f2937;
+}
+
+/* POPUP */
+
+#successPopup{
+display:none;
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:#111827;
+padding:30px;
+border-radius:12px;
+border:2px solid #2563eb;
+box-shadow:0 10px 30px rgba(0,0,0,0.7);
+}
+
+.star{
+font-size:30px;
+color:gold;
+}
+
+button{
+margin-top:15px;
+padding:10px 20px;
+background:#2563eb;
+border:none;
+border-radius:8px;
+color:white;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Waste Sorting Game ♻️</h1>
+
+<p>Drag items into the correct recycling bins</p>
+
+<div class="timer">
+Time Left: <span id="time">60</span>s
+</div>
+
+<!-- ITEMS -->
+
+<div class="items">
+
+<div class="item" draggable="true" data-type="plastic">Bottle</div>
+<div class="item" draggable="true" data-type="organic">Banana Peel</div>
+<div class="item" draggable="true" data-type="paper">Newspaper</div>
+<div class="item" draggable="true" data-type="metal">Can</div>
+<div class="item" draggable="true" data-type="plastic">Plastic Bag</div>
+<div class="item" draggable="true" data-type="organic">Apple Core</div>
+<div class="item" draggable="true" data-type="paper">Cardboard</div>
+<div class="item" draggable="true" data-type="metal">Aluminium Foil</div>
+
+</div>
+
+<!-- BINS -->
+
+<div class="bins">
+
+<div class="bin" data-type="plastic">Plastic</div>
+<div class="bin" data-type="organic">Organic</div>
+<div class="bin" data-type="paper">Paper</div>
+<div class="bin" data-type="metal">Metal</div>
+
+</div>
+
+</div>
+
+<!-- SUCCESS POPUP -->
+
+<div id="successPopup">
+
+<h2>🎉 Great Job!</h2>
+
+<p>You sorted all waste correctly!</p>
+
+<div id="stars"></div>
+
+<button onclick="goHome()">Back to Dashboard</button>
+
+</div>
+
+<script>
+
+/* TIMER */
+
+let time = 60;
+
+const timer = setInterval(()=>{
+
+time--;
+
+document.getElementById("time").innerText = time;
+
+if(time <= 0){
+
+clearInterval(timer);
+
+alert("Time Up! Try Again.");
+
+location.reload();
+
+}
+
+},1000);
+
+
+/* GAME LOGIC */
+
+let items = document.querySelectorAll(".item");
+let bins = document.querySelectorAll(".bin");
+
+let correctCount = 0;
+const totalItems = 8;
+
+items.forEach(item=>{
+
+item.addEventListener("dragstart",e=>{
+
+e.dataTransfer.setData("type",item.dataset.type);
+e.dataTransfer.setData("id",item.innerText);
+
+});
+
+});
+
+
+bins.forEach(bin=>{
+
+bin.addEventListener("dragover",e=>{
+e.preventDefault();
+});
+
+bin.addEventListener("drop",e=>{
+
+let type = e.dataTransfer.getData("type");
+let id = e.dataTransfer.getData("id");
+
+let category = bin.dataset.type;
+
+/* Correct */
+
+if(type === category){
+
+bin.innerHTML = "✔ Correct";
+bin.style.background = "#16a34a";
+
+correctCount++;
+
+document.querySelectorAll(".item").forEach(el=>{
+if(el.innerText === id){
+el.style.display = "none";
+}
+});
+
+}else{
+
+bin.innerHTML = "✖ Wrong";
+bin.style.background = "#dc2626";
+
+}
+
+/* Restore bin after 2 seconds */
+
+setTimeout(()=>{
+
+bin.innerHTML = category.charAt(0).toUpperCase() + category.slice(1);
+
+bin.style.background = "#111827";
+
+},2000);
+
+
+/* Game Complete */
+
+if(correctCount === totalItems){
+
+clearInterval(timer);
+
+showSuccess();
+
+}
+
+});
+
+});
+
+
+/* SUCCESS */
+
+function showSuccess(){
+
+document.getElementById("successPopup").style.display="block";
+
+showStars();
+
+}
+
+
+/* STAR RATING */
+
+function showStars(){
+
+let starHTML="";
+
+if(time > 40){
+
+starHTML = "⭐⭐⭐";
+
+}
+else if(time > 20){
+
+starHTML = "⭐⭐";
+
+}
+else{
+
+starHTML = "⭐";
+
+}
+
+document.getElementById("stars").innerHTML = starHTML;
+
+}
+
+
+/* DASHBOARD */
+
+function goHome(){
+
+window.location.href="/home";
+
+}
+
+</script>
+
+</body>
+</html>

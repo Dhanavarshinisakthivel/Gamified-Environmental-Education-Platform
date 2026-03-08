@@ -1,0 +1,74 @@
+body{
+    font-family: "Segoe UI", sans-serif;
+    background: linear-gradient(135deg,#e8f5e9,#f1f8e9);
+    margin:0;
+    padding:0;
+}
+
+/* Page Center */
+.container{
+    max-width:700px;
+    margin:auto;
+    margin-top:50px;
+}
+
+/* Quiz Card */
+.quiz-card{
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 15px 30px rgba(0,0,0,0.2);
+    transform: perspective(1000px) rotateX(2deg);
+    transition:0.3s;
+}
+
+.quiz-card:hover{
+    transform: perspective(1000px) rotateX(0deg) scale(1.02);
+}
+
+/* Question */
+.question{
+    font-size:22px;
+    font-weight:600;
+    color:#2e7d32;
+    margin-bottom:20px;
+}
+
+/* Options */
+.option{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:12px;
+    margin:8px 0;
+    border-radius:8px;
+    background:#f5f5f5;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+.option:hover{
+    background:#c8e6c9;
+    transform:translateY(-2px);
+}
+
+/* Radio */
+.option input{
+    transform:scale(1.2);
+}
+
+/* Button */
+button{
+    background:#2e7d32;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:16px;
+    margin-top:20px;
+}
+
+button:hover{
+    background:#1b5e20;
+}

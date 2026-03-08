@@ -1,0 +1,44 @@
+package com.dhanavarshini.greenlearn.controller;
+
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import com.dhanavarshini.greenlearn.entity.User;
+import com.dhanavarshini.greenlearn.repository.UserRepository;
+
+@RestController
+@RequestMapping("/users")
+public class UserController {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    // Register User
+    @PostMapping("/register")
+    public User registerUser(@RequestBody User user) {
+        user.setPoints(0);
+        return userRepository.save(user);
+    }
+
+    // Login User
+    @PostMapping("/login")
+    public String loginUser(@RequestBody User user) {
+
+        User existingUser = userRepository.findByEmail(user.getEmail());
+
+        if(existingUser != null && existingUser.getPassword().equals(user.getPassword())) {
+            return "Login Successful";
+        }
+
+        return "Invalid Email or Password";
+    }
+    
+    @GetMapping("/leaderboard")
+    public List<User> leaderboard() {
+        return userRepository.findAll()
+                .stream()
+                .sorted((a, b) -> b.getPoints() - a.getPoints())
+                .toList();
+    }
+}

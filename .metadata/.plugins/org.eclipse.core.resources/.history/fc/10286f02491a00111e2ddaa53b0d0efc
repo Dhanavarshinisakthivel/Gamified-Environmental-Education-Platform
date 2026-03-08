@@ -1,0 +1,22 @@
+package com.dhanavarshini.greenlearn.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import com.dhanavarshini.greenlearn.entity.Question;
+import com.dhanavarshini.greenlearn.repository.QuestionRepository;
+
+@RestController
+@RequestMapping("/quiz")
+public class QuizController {
+
+    @Autowired
+    private QuestionRepository questionRepository;
+
+    @GetMapping("/start")
+    public List<Question> startQuiz() {
+        return questionRepository.findAll();
+    }
+}

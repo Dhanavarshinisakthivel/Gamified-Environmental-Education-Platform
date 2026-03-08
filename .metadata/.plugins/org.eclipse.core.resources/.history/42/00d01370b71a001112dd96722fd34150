@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Environmental Quiz</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<h2>Environmental Quiz</h2>
+
+<h3>Select Quiz Category</h3>
+
+<select id="category">
+<option value="Climate">Climate</option>
+<option value="Energy">Energy</option>
+<option value="Wildlife">Wildlife</option>
+<option value="Waste">Waste</option>
+</select>
+
+<button onclick="loadQuiz()">Start Quiz</button>
+
+<hr>
+
+<div id="quiz"></div>
+
+<br>
+
+<button onclick="submitQuiz()">Submit Quiz</button>
+
+<script>
+
+let questions = [];
+
+/* LOAD QUIZ BASED ON CATEGORY */
+
+function loadQuiz(){
+
+let category = document.getElementById("category").value;
+
+fetch("/questions/category/" + category)
+.then(response => response.json())
+.then(data => {
+
+questions = data;
+
+let html = "";
+
+data.forEach(q => {
+
+html += "<h3>" + q.question + "</h3>";
+
+html += `<input type="radio" name="q${q.id}" value="${q.optionA}"> ${q.optionA}<br>`;
+html += `<input type="radio" name="q${q.id}" value="${q.optionB}"> ${q.optionB}<br>`;
+html += `<input type="radio" name="q${q.id}" value="${q.optionC}"> ${q.optionC}<br>`;
+html += `<input type="radio" name="q${q.id}" value="${q.optionD}"> ${q.optionD}<br><br>`;
+
+});
+
+document.getElementById("quiz").innerHTML = html;
+
+});
+
+}
+
+
+/* SUBMIT QUIZ */
+
+function submitQuiz(){
+
+let answers = [];
+
+questions.forEach(q => {
+
+let selected = document.querySelector(`input[name="q${q.id}"]:checked`);
+
+if(selected){
+
+answers.push({
+questionId: q.id,
+selectedAnswer: selected.value
+});
+
+}
+
+});
+
+fetch("/quiz/submit/1", {
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body: JSON.stringify(answers)
+
+})
+.then(response => response.text())
+.then(score => {
+
+window.location.href="/result?score=" + score;
+
+});
+
+}
+
+</script>
+
+</body>
+
+</html>

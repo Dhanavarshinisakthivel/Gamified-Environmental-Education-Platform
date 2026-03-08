@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>GreenLearn Login</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+<div class="container">
+<h2>Login</h2>
+
+<form action="/users/login" method="post">
+
+Email:
+<input type="text" name="email">
+
+<br><br>
+
+Password:
+<input type="password" name="password">
+
+<br><br>
+
+<button type="submit">Login</button>
+
+</form>
+
+<br>
+
+<a href="/register">Register Here</a>
+
+</div>
+</body>
+
+</html>

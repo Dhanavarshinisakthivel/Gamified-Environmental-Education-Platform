@@ -1,0 +1,62 @@
+package com.dhanavarshini.greenlearn.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import com.dhanavarshini.greenlearn.entity.Question;
+import com.dhanavarshini.greenlearn.repository.QuestionRepository;
+
+
+@RestController
+@RequestMapping("/questions")
+public class QuestionController {
+
+    @Autowired
+    private QuestionRepository questionRepository;
+
+    // Add Question
+    @PostMapping("/add")
+    public Question addQuestion(@RequestBody Question question) {
+        return questionRepository.save(question);
+    }
+
+    // Get All Questions
+    @GetMapping("/all")
+    public List<Question> getAllQuestions() {
+        return questionRepository.findAll();
+    }
+
+    // Get Questions by Category  ← ADD IT HERE
+    @GetMapping("/category/{category}")
+    public List<Question> getQuestionsByCategory(@PathVariable String category){
+        return questionRepository.findByCategory(category);
+    }
+}
+
+
+
+
+//@RestController
+//@RequestMapping("/questions")
+//public class QuestionController {
+//
+//    @Autowired
+//    private QuestionRepository questionRepository;
+//
+//    @PostMapping("/add")
+//    public Question addQuestion(@RequestBody Question question) {
+//        return questionRepository.save(question);
+//    }
+//
+//    @GetMapping("/all")
+//    public List<Question> getAllQuestions() {
+//        return questionRepository.findAll();
+//    }
+//    
+//    @GetMapping("/category/{category}")
+//    public List<Question> getByCategory(@PathVariable String category){
+//        return questionRepository.findByCategory(category);
+//    }
+//}

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Eco Memory Game</title>
+
+<link rel="stylesheet" href="/css/style.css">
+
+<style>
+
+.memory-grid{
+display:grid;
+grid-template-columns:repeat(4,120px);
+gap:15px;
+justify-content:center;
+margin-top:30px;
+}
+
+.card{
+width:120px;
+height:120px;
+background:#1f2937;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:18px;
+color:white;
+border-radius:10px;
+cursor:pointer;
+transition:0.3s;
+}
+
+.card.flipped{
+background:#2563eb;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Eco Memory Game 🧠</h1>
+
+<p>Match environmental concepts!</p>
+
+<div class="memory-grid" id="gameBoard"></div>
+
+</div>
+
+<script>
+
+let cards = [
+"Tree","Oxygen",
+"Solar","Sun",
+"Recycle","Waste",
+"Water","Life"
+];
+
+cards = [...cards,...cards];
+
+cards.sort(()=>0.5-Math.random());
+
+let first=null;
+let second=null;
+let lock=false;
+
+const board=document.getElementById("gameBoard");
+
+cards.forEach(text=>{
+
+let card=document.createElement("div");
+
+card.className="card";
+
+card.dataset.value=text;
+
+card.innerHTML="?";
+
+card.onclick=()=>flip(card);
+
+board.appendChild(card);
+
+});
+
+function flip(card){
+
+if(lock) return;
+
+if(card.innerHTML!="?") return;
+
+card.innerHTML=card.dataset.value;
+
+card.classList.add("flipped");
+
+if(!first){
+
+first=card;
+
+return;
+
+}
+
+second=card;
+
+lock=true;
+
+setTimeout(checkMatch,700);
+
+}
+
+function checkMatch(){
+
+if(first.dataset.value===second.dataset.value){
+
+first=null;
+
+second=null;
+
+lock=false;
+
+}else{
+
+first.innerHTML="?";
+
+second.innerHTML="?";
+
+first.classList.remove("flipped");
+
+second.classList.remove("flipped");
+
+first=null;
+
+second=null;
+
+lock=false;
+
+}
+
+}
+
+</script>
+
+</body>
+</html>

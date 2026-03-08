@@ -1,0 +1,5 @@
+package com.dhanavarshini.greenlearn.repository;
+
+public class QuizResultRepository {
+
+}

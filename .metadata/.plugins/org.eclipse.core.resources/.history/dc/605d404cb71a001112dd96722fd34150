@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Quiz Result</title>
+</head>
+
+<body>
+
+<h2>Your Quiz Result</h2>
+
+<h3 id="score"></h3>
+
+<br>
+
+<a href="/quiz">Take Quiz Again</a>
+
+<br><br>
+
+<a href="/leaderboard">View Leaderboard</a>
+
+<script>
+
+const params = new URLSearchParams(window.location.search);
+const score = params.get("score");
+
+document.getElementById("score").innerText = "Your Score: " + score;
+
+</script>
+
+</body>
+
+</html>

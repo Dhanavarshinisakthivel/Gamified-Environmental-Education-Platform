@@ -1,0 +1,53 @@
+package com.dhanavarshini.greenlearn.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import com.dhanavarshini.greenlearn.entity.Question;
+import com.dhanavarshini.greenlearn.entity.User;
+import com.dhanavarshini.greenlearn.repository.QuestionRepository;
+import com.dhanavarshini.greenlearn.repository.UserRepository;
+import com.dhanavarshini.greenlearn.dto.AnswerRequest;
+
+@RestController
+@RequestMapping("/quiz")
+public class QuizController {
+
+    @Autowired
+    private QuestionRepository questionRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @PostMapping("/submit/{userId}")
+    public int submitQuiz(@PathVariable Long userId,
+                          @RequestBody List<AnswerRequest> answers) {
+
+        int score = 0;
+
+        for (AnswerRequest answer : answers) {
+
+            Question question = questionRepository
+                    .findById(answer.getQuestionId())
+                    .orElse(null);
+
+            if (question != null &&
+                    question.getCorrectAnswer()
+                    .equalsIgnoreCase(answer.getSelectedAnswer())) {
+
+                score++;
+            }
+        }
+
+        User user = userRepository.findById(userId).orElse(null);
+
+        if(user != null) {
+            user.setPoints(user.getPoints() + score);
+            userRepository.save(user);
+        }
+
+        return score;
+    }
+}

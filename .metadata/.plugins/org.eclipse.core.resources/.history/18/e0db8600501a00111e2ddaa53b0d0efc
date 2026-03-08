@@ -1,0 +1,5 @@
+package com.dhanavarshini.greenlearn.entity;
+
+public class QuizResult {
+
+}

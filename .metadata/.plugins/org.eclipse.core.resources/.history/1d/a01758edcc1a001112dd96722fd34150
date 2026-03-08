@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Waste Sorting Game</title>
+
+<style>
+
+body{
+font-family:"Segoe UI",sans-serif;
+background:linear-gradient(135deg,#020617,#1e3a8a);
+color:white;
+text-align:center;
+margin:0;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+margin-top:40px;
+}
+
+/* Items grid */
+
+.items{
+display:grid;
+grid-template-columns:repeat(2,200px);
+gap:20px;
+justify-content:center;
+margin-bottom:40px;
+}
+
+/* Item card */
+
+.item{
+background:#2563eb;
+padding:15px;
+border-radius:10px;
+cursor:grab;
+transition:0.3s;
+box-shadow:0 5px 15px rgba(0,0,0,0.4);
+}
+
+.item:hover{
+transform:translateY(-5px) scale(1.05);
+background:#1d4ed8;
+}
+
+/* Bins layout */
+
+.bins{
+display:grid;
+grid-template-columns:repeat(4,160px);
+gap:25px;
+justify-content:center;
+}
+
+/* Bin style */
+
+.bin{
+height:150px;
+background:#111827;
+border:2px dashed #60a5fa;
+border-radius:12px;
+display:flex;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+font-weight:bold;
+transition:0.3s;
+}
+
+.bin:hover{
+transform:scale(1.05);
+background:#1f2937;
+}
+
+/* Success popup */
+
+#successPopup{
+display:none;
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:#111827;
+padding:30px;
+border-radius:12px;
+border:2px solid #2563eb;
+box-shadow:0 10px 30px rgba(0,0,0,0.7);
+}
+
+button{
+margin-top:15px;
+padding:10px 20px;
+background:#2563eb;
+border:none;
+border-radius:8px;
+color:white;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Waste Sorting Game ♻️</h1>
+
+<p>Drag items into the correct recycling bins</p>
+
+<!-- ITEMS -->
+
+<div class="items">
+
+<div class="item" draggable="true" data-type="plastic">Bottle</div>
+<div class="item" draggable="true" data-type="organic">Banana Peel</div>
+<div class="item" draggable="true" data-type="paper">Newspaper</div>
+<div class="item" draggable="true" data-type="metal">Can</div>
+<div class="item" draggable="true" data-type="plastic">Plastic Bag</div>
+<div class="item" draggable="true" data-type="organic">Apple Core</div>
+<div class="item" draggable="true" data-type="paper">Cardboard</div>
+<div class="item" draggable="true" data-type="metal">Aluminium Foil</div>
+
+</div>
+
+<!-- BINS -->
+
+<div class="bins">
+
+<div class="bin" data-type="plastic">Plastic</div>
+<div class="bin" data-type="organic">Organic</div>
+<div class="bin" data-type="paper">Paper</div>
+<div class="bin" data-type="metal">Metal</div>
+
+</div>
+
+</div>
+
+<!-- SUCCESS POPUP -->
+
+<div id="successPopup">
+
+<h2>🎉 Great Job!</h2>
+
+<p>You sorted all waste correctly!</p>
+
+<button onclick="goHome()">Back to Dashboard</button>
+
+</div>
+
+<script>
+
+let items=document.querySelectorAll(".item");
+let bins=document.querySelectorAll(".bin");
+
+let correctCount=0;
+const totalItems=8;
+
+items.forEach(item=>{
+
+item.addEventListener("dragstart",e=>{
+e.dataTransfer.setData("type",item.dataset.type);
+e.dataTransfer.setData("id",item.innerText);
+});
+
+});
+
+/* Drop logic */
+
+bins.forEach(bin=>{
+
+bin.addEventListener("dragover",e=>{
+e.preventDefault();
+});
+
+bin.addEventListener("drop",e=>{
+
+let type=e.dataTransfer.getData("type");
+let id=e.dataTransfer.getData("id");
+
+if(type===bin.dataset.type){
+
+bin.innerHTML="✔ Correct";
+bin.style.background="#16a34a";
+
+correctCount++;
+
+document.querySelectorAll(".item").forEach(el=>{
+if(el.innerText===id){
+el.style.display="none";
+}
+});
+
+if(correctCount===totalItems){
+
+document.getElementById("successPopup").style.display="block";
+
+}
+
+}else{
+
+bin.style.background="#dc2626";
+
+setTimeout(()=>{
+bin.style.background="#111827";
+},600);
+
+}
+
+});
+
+});
+
+/* Dashboard */
+
+function goHome(){
+window.location.href="/home";
+}
+
+</script>
+
+</body>
+</html>

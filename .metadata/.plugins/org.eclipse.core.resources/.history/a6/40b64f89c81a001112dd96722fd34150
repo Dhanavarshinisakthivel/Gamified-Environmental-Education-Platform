@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Eco Memory Game</title>
+
+<style>
+
+/* Page */
+
+body{
+font-family:"Segoe UI",sans-serif;
+background:linear-gradient(135deg,#020617,#1e3a8a);
+color:white;
+text-align:center;
+margin:0;
+}
+
+/* Container */
+
+.game-container{
+max-width:600px;
+margin:auto;
+margin-top:60px;
+}
+
+/* Grid */
+
+.memory-grid{
+display:grid;
+grid-template-columns:repeat(4,120px);
+gap:20px;
+justify-content:center;
+margin-top:40px;
+}
+
+/* Card */
+
+.card{
+width:120px;
+height:120px;
+perspective:1000px;
+cursor:pointer;
+}
+
+/* Inner */
+
+.card-inner{
+position:relative;
+width:100%;
+height:100%;
+transition:transform 0.6s;
+transform-style:preserve-3d;
+}
+
+/* Flip */
+
+.card.flip .card-inner{
+transform:rotateY(180deg);
+}
+
+/* Faces */
+
+.card-front,
+.card-back{
+
+position:absolute;
+width:100%;
+height:100%;
+border-radius:12px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+font-size:18px;
+font-weight:600;
+
+backface-visibility:hidden;
+
+}
+
+/* Front */
+
+.card-front{
+background:#0f172a;
+border:2px solid #2563eb;
+}
+
+/* Back */
+
+.card-back{
+background:#2563eb;
+transform:rotateY(180deg);
+}
+
+/* Title */
+
+h1{
+color:#60a5fa;
+}
+
+/* Popup */
+
+#successPopup{
+display:none;
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:#111827;
+padding:35px;
+border-radius:12px;
+box-shadow:0 10px 30px rgba(0,0,0,0.7);
+text-align:center;
+border:2px solid #2563eb;
+z-index:10;
+}
+
+#successPopup h2{
+color:#60a5fa;
+}
+
+#successPopup button{
+margin-top:15px;
+padding:10px 20px;
+background:#2563eb;
+border:none;
+border-radius:8px;
+color:white;
+cursor:pointer;
+}
+
+#confetti{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+pointer-events:none;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<canvas id="confetti"></canvas>
+
+<div class="game-container">
+
+<h1>Eco Memory Game</h1>
+<p>Match environmental concepts</p>
+
+<div class="memory-grid" id="gameBoard"></div>
+
+</div>
+
+<!-- Success Popup -->
+
+<div id="successPopup">
+
+<h2>🎉 Congratulations!</h2>
+
+<p>You completed the Eco Memory Game!</p>
+
+<button onclick="goHome()">Back to Dashboard</button>
+
+</div>
+
+<script>
+
+/* Card Pairs */
+
+let cards = [
+"Tree","Tree",
+"Solar","Solar",
+"Recycle","Recycle",
+"Water","Water"
+];
+
+/* Shuffle */
+
+cards.sort(()=>0.5-Math.random());
+
+let first=null;
+let second=null;
+let lock=false;
+
+let matches=0;
+const totalPairs=4;
+
+const board=document.getElementById("gameBoard");
+
+/* Create Cards */
+
+cards.forEach(text=>{
+
+let card=document.createElement("div");
+
+card.className="card";
+
+card.innerHTML=`
+
+<div class="card-inner">
+
+<div class="card-front">🌍</div>
+
+<div class="card-back">${text}</div>
+
+</div>
+
+`;
+
+card.dataset.value=text;
+
+card.onclick=()=>flip(card);
+
+board.appendChild(card);
+
+});
+
+/* Flip */
+
+function flip(card){
+
+if(lock) return;
+
+if(card===first) return;
+
+if(card.classList.contains("matched")) return;
+
+card.classList.add("flip");
+
+if(!first){
+
+first=card;
+return;
+
+}
+
+second=card;
+
+lock=true;
+
+setTimeout(checkMatch,800);
+
+}
+
+/* Match Check */
+
+function checkMatch(){
+
+if(first.dataset.value===second.dataset.value){
+
+first.classList.add("matched");
+second.classList.add("matched");
+
+first.style.pointerEvents="none";
+second.style.pointerEvents="none";
+
+matches++;
+
+if(matches===totalPairs){
+showSuccess();
+}
+
+first=null;
+second=null;
+lock=false;
+
+}else{
+
+first.classList.remove("flip");
+second.classList.remove("flip");
+
+first=null;
+second=null;
+lock=false;
+
+}
+
+}
+
+/* Success */
+
+function showSuccess(){
+
+document.getElementById("successPopup").style.display="block";
+
+startConfetti();
+
+}
+
+/* Dashboard */
+
+function goHome(){
+
+window.location.href="/home";
+
+}
+
+/* Confetti */
+
+function startConfetti(){
+
+const canvas=document.getElementById("confetti");
+const ctx=canvas.getContext("2d");
+
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let pieces=[];
+
+for(let i=0;i<150;i++){
+
+pieces.push({
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+size:Math.random()*8+4,
+speed:Math.random()*3+2
+});
+
+}
+
+function draw(){
+
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+ctx.fillStyle="#60a5fa";
+
+pieces.forEach(p=>{
+
+ctx.fillRect(p.x,p.y,p.size,p.size);
+
+p.y+=p.speed;
+
+if(p.y>canvas.height){
+p.y=0;
+}
+
+});
+
+requestAnimationFrame(draw);
+
+}
+
+draw();
+
+}
+
+</script>
+
+</body>
+</html>
