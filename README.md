@@ -38,10 +38,9 @@ GreenLearn is a web-based platform that makes learning about the environment fun
 | Layer | Technology |
 |---|---|
 | Backend | Java 21, Spring Boot |
-| Database | MySQL 8.0 |
+| Database | MySQL |
 | ORM | Spring Data JPA / Hibernate |
-| Frontend | Thymeleaf, HTML, CSS, Vanilla JavaScript |
-| Fonts | Fraunces (serif) + Plus Jakarta Sans |
+| Frontend | Thymeleaf, HTML, CSS, JavaScript |
 | Build Tool | Maven |
 
 ---
