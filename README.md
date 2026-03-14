@@ -38,9 +38,10 @@ GreenLearn is a web-based platform that makes learning about the environment fun
 | Layer | Technology |
 |---|---|
 | Backend | Java 21, Spring Boot |
-| Database | MySQL |
+| Database | MySQL 8.0 |
 | ORM | Spring Data JPA / Hibernate |
-| Frontend | Thymeleaf, HTML, CSS, JavaScript |
+| Frontend | Thymeleaf, HTML, CSS, Vanilla JavaScript |
+| Fonts | Fraunces (serif) + Plus Jakarta Sans |
 | Build Tool | Maven |
 
 ---
@@ -101,8 +102,7 @@ Make sure you have the following installed:
 
 - **Java 21** — [Download here](https://www.oracle.com/java/technologies/downloads/)
 - **MySQL 8.0** — [Download here](https://dev.mysql.com/downloads/)
-- **Maven** — [Download here](https://maven.apache.org/download.cgi) *(or use IntelliJ's built-in Maven)*
-- **IntelliJ IDEA** *(recommended)* — [Download here](https://www.jetbrains.com/idea/download/)
+- **Spring Tool Suite 4 (STS)** *(recommended IDE)* — [Download here](https://spring.io/tools)
 
 ---
 
@@ -139,10 +139,10 @@ spring.jpa.show-sql=true
 
 ### Step 4 — Run the Project
 
-**Option A — Using IntelliJ IDEA:**
-1. Open the project in IntelliJ
-2. Wait for Maven to download dependencies
-3. Click the green ▶ **Run** button
+**Option A — Using Spring Tool Suite (STS):**
+1. Open STS → File → Import → Existing Maven Project → select the project folder
+2. Wait for Maven to download all dependencies automatically
+3. Right-click the project → Run As → Spring Boot App
 
 **Option B — Using Terminal:**
 ```bash
